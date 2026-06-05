@@ -300,3 +300,33 @@ body {
 .foto-hinchas {
   background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Hinchas.jpeg") !important;
 }
+.hero {
+  padding-top: 90px;
+  min-height: 85vh;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 40px 24px;
+  color: white;
+  text-align: center;
+}
+
+.hero-content h1 {
+  color: white;
+  font-size: clamp(56px, 9vw, 120px);
+  line-height: 0.9;
+}
+
+.hero-text {
+  color: white;
+  max-width: 720px;
+  margin: 20px auto;
+  font-size: 20px;
+}
+
+.hero .tag {
+  color: #ffffff;
+}
