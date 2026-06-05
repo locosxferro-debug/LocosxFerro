@@ -523,3 +523,42 @@ body {
   }
 
 }
+@media (max-width: 768px) {
+  .nav {
+    padding: 14px 20px !important;
+  }
+
+  .logo {
+    font-size: 38px !important;
+    line-height: 0.9 !important;
+  }
+
+  .menu-btn {
+    display: block !important;
+    font-size: 34px !important;
+    color: white !important;
+    background: none !important;
+    border: none !important;
+  }
+
+  .nav-links {
+    display: none !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: #00552e !important;
+    padding: 20px !important;
+    flex-direction: column !important;
+    gap: 18px !important;
+    text-align: center !important;
+  }
+
+  .nav-links.active {
+    display: flex !important;
+  }
+
+  .hero {
+    padding-top: 90px !important;
+  }
+}
