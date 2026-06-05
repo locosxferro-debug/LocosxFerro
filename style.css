@@ -330,3 +330,56 @@ body {
 .hero .tag {
   color: #ffffff;
 }
+@media (max-width: 768px) {
+  .hero {
+    min-height: 90vh;
+    padding-top: 80px;
+    background-position: center;
+  }
+
+  .hero-content h1 {
+    font-size: 54px;
+  }
+
+  .hero-text {
+    font-size: 16px;
+  }
+
+  .cards,
+  .gallery,
+  .intro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .photo {
+    min-height: 220px;
+  }
+
+  .banner,
+  .contact-box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .contact-actions {
+    justify-content: center;
+  }
+
+  .nav-links {
+    background: #004225;
+  }
+}
+
+@media (min-width: 769px) {
+  .gallery {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .photo {
+    min-height: 300px;
+  }
+
+  .hero-content h1 {
+    font-size: 110px;
+  }
+}
