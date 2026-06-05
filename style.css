@@ -503,3 +503,23 @@ body {
     text-align: center !important;
   }
 }
+@media (max-width: 768px) {
+
+  .header {
+    padding: 0;
+  }
+
+  .nav {
+    padding: 10px 15px !important;
+  }
+
+  .logo {
+    font-size: 38px !important;
+    line-height: 0.9;
+  }
+
+  .hero {
+    padding-top: 70px !important;
+  }
+
+}
