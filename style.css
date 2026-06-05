@@ -257,122 +257,12 @@ body {
 }
 
 .photo {
-  min-height: 230px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-.placeholder {
-  background: linear-gradient(135deg, var(--green-dark), var(--green-light));
-}
-
-.note {
-  margin-top: 18px;
-  color: var(--gray);
-}
-
-.banner {
-  margin: 30px auto;
-  max-width: 1180px;
-  padding: 54px;
-  border-radius: 34px;
-  background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-}
-
-.banner p:first-child {
-  text-transform: uppercase;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-  color: #b6ffd9;
-}
-
-.banner-text {
-  color: rgba(255,255,255,0.82);
-  max-width: 650px;
-}
-
-.contact-box {
-  background: var(--black);
-  color: white;
-  border-radius: 34px;
-  padding: 54px;
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 28px;
-  align-items: center;
-}
-
-.green {
-  color: #b6ffd9;
-}
-
-.contact-actions {
-  display: flex;
-  flex-direction: column;
-}
-
-.dark-text {
-  color: var(--white) !important;
-}
-
-.footer {
-  background: var(--green-dark);
-  color: white;
-  text-align: center;
-  padding: 24px;
-  font-weight: 700;
-}
-
-@media (max-width: 900px) {
-  .menu-btn {
-    display: block;
-  }
-
-  .nav-links {
-    position: absolute;
-    top: 74px;
-    left: 0;
-    right: 0;
-    background: var(--green-dark);
-    flex-direction: column;
-    padding: 22px;
-    display: none;
-  }
-
-  .nav-links.active {
-    display: flex;
-  }
-
-  .intro-grid,
-  .cards,
-  .gallery,
-  .contact-box {
-    grid-template-columns: 1fr;
-  }
-
-  .banner {
-    margin: 20px 14px;
-    padding: 36px 26px;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
-.photo {
+  min-height: 250px !important;
   position: relative;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
+  background-size: cover !important;
+  background-position: center !important;
+  border-radius: 24px;
 }
 
 .photo span {
@@ -382,21 +272,22 @@ body {
   color: white;
   font-size: 22px;
   font-weight: 800;
-  text-shadow: 2px 2px 8px rgba(0,0,0,.8);
+  text-shadow: 2px 2px 8px rgba(0,0,0,.9);
+  z-index: 2;
 }
 
 .foto-partido {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Fotos-del-partido.jpeg");
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Fotos-del-partido.jpeg") !important;
 }
 
 .foto-previa {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Previa.jpeg");
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Previa.jpeg") !important;
 }
 
 .foto-viajes {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Viajes.jpeg");
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Viajes.jpeg") !important;
 }
 
 .foto-hinchas {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Hinchas.jpeg");
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Hinchas.jpeg") !important;
 }
