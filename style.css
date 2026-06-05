@@ -368,3 +368,35 @@ body {
     align-items: flex-start;
   }
 }
+.photo {
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
+
+.photo span {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  color: white;
+  font-size: 22px;
+  font-weight: 800;
+  text-shadow: 2px 2px 8px rgba(0,0,0,.8);
+}
+
+.foto-partido {
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Fotos-del-partido.jpeg");
+}
+
+.foto-previa {
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Previa.jpeg");
+}
+
+.foto-viajes {
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Viajes.jpeg");
+}
+
+.foto-hinchas {
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("Hinchas.jpeg");
+}
