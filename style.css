@@ -81,15 +81,24 @@ body {
 }
 
 .hero {
+  position: relative;
   min-height: 100vh;
+
+  background-image:
+  linear-gradient(
+    rgba(0,0,0,.55),
+    rgba(0,0,0,.55)
+  ),
+  url("./hero-ferro.jpeg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   display: flex;
   align-items: center;
-  position: relative;
-  padding: 120px 22px 70px;
-  background: linear-gradient(135deg, rgba(0,77,41,0.96), rgba(0,122,61,0.75)),
-              radial-gradient(circle at top right, #20c56e 0%, transparent 35%),
-              var(--green-dark);
-  overflow: hidden;
+  justify-content: center;
+}
 }
 
 .hero::after {
