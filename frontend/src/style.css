@@ -89,7 +89,7 @@ body {
     rgba(0,0,0,.55),
     rgba(0,0,0,.55)
   ),
-  url("./hero-ferro.jpeg");
+  url("/hero-ferro.jpeg");
 
   background-size: cover;
   background-position: center;
@@ -98,7 +98,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-}
 }
 
 .hero::after {
@@ -286,19 +285,19 @@ body {
 }
 
 .foto-partido {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Fotos-del-partido.jpeg") !important;
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("/Fotos-del-partido.jpeg") !important;
 }
 
 .foto-previa {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Previa.jpeg") !important;
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("/Previa.jpeg") !important;
 }
 
 .foto-viajes {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Viajes.jpeg") !important;
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("/Viajes.jpeg") !important;
 }
 
 .foto-hinchas {
-  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("./Hinchas.jpeg") !important;
+  background-image: linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)), url("/Hinchas.jpeg") !important;
 }
 .hero {
   padding-top: 90px;
@@ -613,4 +612,89 @@ body {
   .hero {
     padding-top: 80px !important;
   }
+}
+
+
+/* ===== AJUSTES REACT + BOOTSTRAP ===== */
+.intro-card,
+.card {
+  height: 100%;
+  border: 0;
+}
+
+.contenido-card {
+  min-height: 100%;
+}
+
+.banner {
+  background: var(--green-dark);
+  color: var(--white);
+  padding: 80px 22px;
+}
+
+.banner-content {
+  max-width: 1180px !important;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.banner p:not(.tag) {
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+  margin-top: 18px;
+}
+
+
+.contact-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.footer {
+  background: var(--black);
+  color: var(--white);
+  text-align: center;
+  padding: 28px 18px;
+}
+
+.footer p {
+  margin: 0;
+}
+
+
+.banner-full {
+  width: 100%;
+  max-width: none !important;
+  margin: 0;
+}
+
+.banner-bg {
+  width: 100%;
+  padding: 70px 0;
+  background:
+    radial-gradient(circle at top right, rgba(33, 163, 102, 0.35), transparent 35%),
+    linear-gradient(135deg, var(--green-dark), #071f14);
+  color: white;
+}
+
+.banner-bg h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(42px, 7vw, 76px);
+  line-height: 0.95;
+}
+
+.banner-bg p {
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+}
+
+.tag.green {
+  color: #b6ffd9;
 }
