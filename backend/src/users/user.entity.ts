@@ -14,11 +14,20 @@ export class User {
   @Column({ type: 'varchar', unique: true })
   email!: string;
 
-  @Column({ type: 'varchar', unique: true })
-  username!: string;
+  @Column({ type: 'varchar', nullable: true })
+  username!: string | null;
 
-  @Column({ type: 'varchar' })
-  password!: string;
+  @Column({ type: 'varchar', nullable: true })
+  fullName!: string | null;
+
+  @Column({ type: 'varchar', unique: true, nullable: true })
+  googleId!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  picture!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  password!: string | null;
 
   @Column({ type: 'boolean', default: false })
   subscriptionActive!: boolean;

@@ -30,7 +30,7 @@ export default function Contenido() {
 
         <Row className="g-4">
           {contenidos.map((item) => (
-            <Col key={item.numero} md={6} lg={3}>
+            <Col key={item.titulo} md={6} lg={3}>
               <article className="card contenido-card">
                 <h3>{item.titulo}</h3>
                 <p>{item.texto}</p>
