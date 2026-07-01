@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173',
-      'https://locosxferro-1.onrender.com', //la url del tunel del frontend
+      process.env.FRONTEND_LOCAL_URL, //la url del tunel del frontend
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
