@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     allowedHosts: [
-      'locosxferro-debug.github.io/LocosxFerro',  //poner la url sin el 'https://' del tunel del front 
+      'locosxferro-1.onrender.com',  //poner la url sin el 'https://' del tunel del front 
     ],
   },
 });
