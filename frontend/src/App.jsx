@@ -29,7 +29,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter basename="/LocosxFerro">
+    <BrowserRouter>
       <Routes>
         <Route
           path="/"
