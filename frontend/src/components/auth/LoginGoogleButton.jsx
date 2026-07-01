@@ -12,6 +12,7 @@ export default function LoginGoogleButton({ onLogin }) {
 
       const data = await loginWithGoogle(credential);
 
+      console.log('DATA LOGIN GOOGLE:', data);
       saveSession(data);
 
       if (onLogin) {
@@ -27,10 +28,12 @@ export default function LoginGoogleButton({ onLogin }) {
 
   return (
     <GoogleLogin
+      prompt="select_account"
       onSuccess={handleSuccess}
       onError={() => {
         alert('No se pudo iniciar sesión con Google');
       }}
+      
     />
   );
 }

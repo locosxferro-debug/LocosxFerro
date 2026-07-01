@@ -2,9 +2,12 @@ import { Container, Row, Col } from 'react-bootstrap';
 import LoginGoogleButton from '../auth/LoginGoogleButton.jsx';
 import { redirectToSubscriptionCheckout } from '../../services/subscriptionService';
 
-
 export default function Sumate({ user, onLogin }) {
+  const estaSuscripto = user?.subscriptionActive === true;
+
   const handleSubscribe = async () => {
+    if (!user || estaSuscripto) return;
+
     try {
       await redirectToSubscriptionCheckout(user);
     } catch (error) {
@@ -25,9 +28,9 @@ export default function Sumate({ user, onLogin }) {
         <button
           className="btn btn-success btn-lg"
           onClick={handleSubscribe}
-          disabled={!user}
+          disabled={!user || estaSuscripto}
         >
-          Suscribirme
+          {estaSuscripto ? 'Ya estás suscripto' : 'Suscribirme'}
         </button>
 
         {!user && (

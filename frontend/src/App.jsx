@@ -18,8 +18,10 @@ export default function App() {
       const userActualizado = await getMe();
 
       if (userActualizado) {
-        setUser(userActualizado);
-        localStorage.setItem('user', JSON.stringify(userActualizado));
+        const nuevoUser = userActualizado.user ?? userActualizado;
+
+        setUser(nuevoUser);
+        localStorage.setItem('user', JSON.stringify(nuevoUser));
       }
     };
 
@@ -27,7 +29,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/LocosxFerro">
       <Routes>
         <Route
           path="/"
@@ -52,7 +54,7 @@ export default function App() {
           element={
             <>
               <Header user={user} onLogin={setUser} />
-              <ZonaSocios onUserUpdated={setUser} />
+              <ZonaSocios user={user} onUserUpdated={setUser} />
               <Footer />
             </>
           }

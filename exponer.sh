@@ -10,27 +10,31 @@ if [ $# -eq 0 ]; then
     exit 1
 fi
 
-echo -e "${GREEN}▶ Exponiendo puertos: $@${NC}"
+echo -e "${GREEN}▶ Exponiendo puertos con cloudflared: $@${NC}"
 
-# Detener procesos previos
-pkill -f ngrok 2>/dev/null
+# Detener procesos previos de cloudflared
+pkill -f cloudflared 2>/dev/null
 sleep 1
 
-# Iniciar un túnel por cada puerto con URLs diferentes
+echo -e "\n${GREEN}📋 URLs de tus servicios:${NC}"
+
 for PORT in "$@"; do
     echo -e "${GREEN}▶ Iniciando túnel para puerto $PORT${NC}"
-    # La clave está en NO usar --pooling-enabled ni hostnames fijos
-    ngrok http $PORT > /dev/null 2>&1 &
-    sleep 2  # Esperar más tiempo para que cada túnel obtenga URL única
+
+    LOG_FILE="/tmp/cloudflared-$PORT.log"
+
+    cloudflared tunnel --url "http://localhost:$PORT" > "$LOG_FILE" 2>&1 &
+
+    sleep 4
+
+    URL=$(grep -o 'https://[-a-zA-Z0-9.]*\.trycloudflare\.com' "$LOG_FILE" | head -n 1)
+
+    if [ -n "$URL" ]; then
+        echo -e "🔹 Puerto $PORT → $URL"
+    else
+        echo -e "${RED}No se pudo obtener URL para puerto $PORT. Revisá:${NC} $LOG_FILE"
+    fi
 done
 
-echo -e "${GREEN}✅ Túneles iniciados. Obteniendo URLs...${NC}"
-sleep 3
-
-# Mostrar TODAS las URLs correctamente
-echo -e "\n${GREEN}📋 URLs de tus servicios:${NC}"
-curl -s http://localhost:4040/api/tunnels | jq -r '.tunnels[] | "🔹 Puerto \(.config.addr) → \(.public_url)"' 2>/dev/null || \
-    echo -e "${RED}No se pudo obtener las URLs. Visita http://localhost:4040 para verlas.${NC}"
-
-echo -e "\n${GREEN}▶ Para detener todos los túneles: pkill -f ngrok${NC}"
-echo -e "${GREEN}▶ Para ver el estado: curl -s http://localhost:4040/api/tunnels | jq${NC}"
+echo -e "\n${GREEN}▶ Para detener todos los túneles: pkill -f cloudflared${NC}"
+echo -e "${GREEN}▶ Logs: /tmp/cloudflared-PUERTO.log${NC}"
