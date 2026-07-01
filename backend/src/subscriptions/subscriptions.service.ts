@@ -205,18 +205,14 @@ export class SubscriptionsService {
 
 
   private getPayerEmail(user: User): string {
-  const useTestPayer = process.env.MP_USE_TEST_PAYER === 'true';
+    const payerEmail = user.email;
 
-  const payerEmail = useTestPayer
-    ? process.env.MP_TEST_PAYER_EMAIL
-    : user.email;
+    if (!payerEmail) {
+      throw new Error('El usuario no tiene email');
+    }
 
-  if (!payerEmail) {
-    throw new Error('No se pudo determinar el payer_email');
+    return payerEmail;
   }
-
-  return payerEmail;
-}
 }
 
 
