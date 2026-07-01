@@ -14,11 +14,11 @@ import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST ?? 'localhost',
+      host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT ?? 5432),
-      username: process.env.DB_USERNAME ?? 'admin',
-      password: process.env.DB_PASSWORD ?? 'admin',
-      database: process.env.DB_DATABASE ?? 'locosxferro',
+      username: process.env.DB_USERNAME ,
+      password: process.env.DB_PASSWORD ,
+      database: process.env.DB_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
     }),
