@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:5173',
-      'https://passes-beverly-broadcast-holes.trycloudflare.com', //la url del tunel del frontend
+      'https://locosxferro-debug.github.io/LocosxFerro', //la url del tunel del frontend
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],

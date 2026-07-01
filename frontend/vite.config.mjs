@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     allowedHosts: [
-      'passes-beverly-broadcast-holes.trycloudflare.com',  //poner la url sin el 'https://' del tunel del front 
+      'locosxferro-debug.github.io/LocosxFerro',  //poner la url sin el 'https://' del tunel del front 
     ],
   },
 });
