@@ -205,18 +205,14 @@ export class SubscriptionsService {
 
 
   private getPayerEmail(user: User): string {
-    console.log('USER EN getPayerEmail:', {
-      id: user.id,
-      email: user.email,
-    });
+    const payerEmail = user.email?.trim().toLowerCase();
 
-    const payerEmail = user.email;
+    console.log('EMAIL ORIGINAL:', user.email);
+    console.log('PAYER EMAIL NORMALIZADO:', payerEmail);
 
     if (!payerEmail) {
       throw new Error('El usuario no tiene email');
     }
-
-    console.log('PAYER EMAIL RETORNADO:', payerEmail);
 
     return payerEmail;
   }
