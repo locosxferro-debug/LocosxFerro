@@ -20,7 +20,7 @@ const fotos = [
   {
     clase: 'foto-hinchas',
     texto: 'HINCHAS',
-    link: 'https://drive.google.com/drive/u/1/folders/1JS1jnLaz3u9VPzHD18OAbCUTPXHQn6np/LINK_HINCHAS'
+    link: 'https://drive.google.com/drive/u/1/folders/1JS1jnLaz3u9VPzHD18OAbCUTPXHQn6np'
   },
 ];
 
