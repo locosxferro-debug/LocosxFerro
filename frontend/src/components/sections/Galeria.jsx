@@ -35,15 +35,17 @@ export default function Galeria() {
         <Row className="g-4">
           {fotos.map((foto) => (
             <Col key={foto.clase} md={6} lg={3}>
-              <a
-                href={foto.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`photo ${foto.clase}`}
-              >
-                <span>{foto.texto}</span>
-              </a>
-            </Col>
+  <a
+    href={foto.link}
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ textDecoration: "none", display: "block" }}
+  >
+    <div className={`photo ${foto.clase}`}>
+      <span>{foto.texto}</span>
+    </div>
+  </a>
+</Col>
           ))}
         </Row>
       </Container>
