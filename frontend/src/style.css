@@ -265,6 +265,7 @@ body {
 }
 
 .photo {
+  display: block;
   min-height: 250px !important;
   position: relative;
   overflow: hidden;
