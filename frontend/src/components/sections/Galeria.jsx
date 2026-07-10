@@ -1,10 +1,27 @@
 import { Container, Row, Col } from 'react-bootstrap';
 
 const fotos = [
-  { clase: 'foto-partido', texto: 'FOTOS DE PARTIDO' },
-  { clase: 'foto-previa', texto: 'PREVIAS' },
-  { clase: 'foto-viajes', texto: 'VIAJES' },
-  { clase: 'foto-hinchas', texto: 'HINCHAS' },
+const fotos = [
+  {
+    clase: 'foto-partido',
+    texto: 'FOTOS DE PARTIDO',
+    link: 'https://drive.google.com/drive/folders/LINK_PARTIDOS'
+  },
+  {
+    clase: 'foto-previa',
+    texto: 'PREVIAS',
+    link: 'https://drive.google.com/drive/folders/LINK_PREVIAS'
+  },
+  {
+    clase: 'foto-viajes',
+    texto: 'VIAJES',
+    link: 'https://drive.google.com/drive/folders/LINK_VIAJES'
+  },
+  {
+    clase: 'foto-hinchas',
+    texto: 'HINCHAS',
+    link: 'https://drive.google.com/drive/u/1/folders/1JS1jnLaz3u9VPzHD18OAbCUTPXHQn6np/LINK_HINCHAS'
+  },
 ];
 
 export default function Galeria() {
