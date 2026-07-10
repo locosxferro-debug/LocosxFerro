@@ -1,21 +1,20 @@
 import { Container, Row, Col } from 'react-bootstrap';
 
 const fotos = [
-const fotos = [
   {
     clase: 'foto-partido',
     texto: 'FOTOS DE PARTIDO',
-    link: 'https://drive.google.com/drive/folders/LINK_PARTIDOS'
+    
   },
   {
     clase: 'foto-previa',
     texto: 'PREVIAS',
-    link: 'https://drive.google.com/drive/folders/LINK_PREVIAS'
+    
   },
   {
     clase: 'foto-viajes',
     texto: 'VIAJES',
-    link: 'https://drive.google.com/drive/folders/LINK_VIAJES'
+    
   },
   {
     clase: 'foto-hinchas',
@@ -36,9 +35,14 @@ export default function Galeria() {
         <Row className="g-4">
           {fotos.map((foto) => (
             <Col key={foto.clase} md={6} lg={3}>
-              <div className={`photo ${foto.clase}`}>
+              <a
+                href={foto.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`photo ${foto.clase}`}
+              >
                 <span>{foto.texto}</span>
-              </div>
+              </a>
             </Col>
           ))}
         </Row>
