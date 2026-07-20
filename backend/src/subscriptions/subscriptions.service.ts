@@ -11,59 +11,71 @@ export class SubscriptionsService {
   ) {}
 
   async createSubscription(userId: number) {
-    
     const user = await this.usersRepository.findOne({
       where: { id: userId },
     });
 
-    
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    
+    if (user.subscriptionActive) {
+      return {
+        alreadyActive: true,
+        message: 'El usuario ya tiene una suscripción activa',
+      };
+    }
 
     const payerEmail = this.getPayerEmail(user);
 
+    const body = {
+      reason: 'Suscripción mensual Locos x Ferro',
+      external_reference: String(user.id),
+
+      payer_email: payerEmail,
+
+      auto_recurring: {
+        frequency: 1,
+        frequency_type: 'months',
+        transaction_amount: 1000,
+        currency_id: 'ARS',
+      },
+
+      back_url: `${process.env.FRONTEND_LOCAL_URL}/suscripcion/exito`,
+
+      status: 'pending',
+    };
+
     console.log('MP_ACCESS_TOKEN existe:', !!process.env.MP_ACCESS_TOKEN);
-    console.log('MP_ACCESS_TOKEN empieza con:', process.env.MP_ACCESS_TOKEN?.slice(0, 12));
-    
+    console.log(
+      'MP_ACCESS_TOKEN empieza con:',
+      process.env.MP_ACCESS_TOKEN?.slice(0, 12),
+    );
+
+    console.log('BODY ENVIADO A MP:', body);
+
     const response = await fetch('https://api.mercadopago.com/preapproval', {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        reason: 'Suscripción mensual Locos x Ferro',
-        external_reference: String(user.id),
-        
-        payer_email: payerEmail ,
-
-        auto_recurring: {
-          frequency: 1,
-          frequency_type: 'months',
-          transaction_amount: 1000,
-          currency_id: 'ARS',
-        },
-
-        back_url: `${process.env.FRONTEND_LOCAL_URL}/suscripcion/exito`,
-
-        status: 'pending',
-      }),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
 
+    console.log('RESPUESTA MP CREATE PREAPPROVAL:', data);
+
     if (!response.ok) {
-      console.error(data);
+      console.error('ERROR CREANDO SUSCRIPCIÓN EN MP:', data);
       throw new Error('Error creando suscripción en Mercado Pago');
     }
 
     await this.usersRepository.update(user.id, {
       mercadoPagoPreapprovalId: data.id,
       subscriptionStatus: data.status,
-      subscriptionActive: false,
+      subscriptionActive: data.status === 'authorized',
     });
 
     return {
@@ -205,13 +217,18 @@ export class SubscriptionsService {
 
 
   private getPayerEmail(user: User): string {
-    const payerEmail = user.email?.trim().toLowerCase();
+    const useTestPayer = process.env.MP_USE_TEST_PAYER === 'true';
 
-    console.log('EMAIL ORIGINAL:', user.email);
-    console.log('PAYER EMAIL NORMALIZADO:', payerEmail);
+    const payerEmail = useTestPayer
+      ? process.env.MP_TEST_PAYER_EMAIL?.trim().toLowerCase()
+      : user.email?.trim().toLowerCase();
+
+    console.log('MP_USE_TEST_PAYER:', process.env.MP_USE_TEST_PAYER);
+    console.log('EMAIL USUARIO:', user.email);
+    console.log('PAYER EMAIL FINAL:', payerEmail);
 
     if (!payerEmail) {
-      throw new Error('El usuario no tiene email');
+      throw new Error('No se pudo determinar el payer_email');
     }
 
     return payerEmail;
