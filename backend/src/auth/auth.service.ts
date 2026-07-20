@@ -63,7 +63,7 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync({
       sub: user.id,
       email: user.email,
-      subscriptionActive: user.subscriptionActive,
+      membershipActive: user.membershipActive,
     });
 
     return {
@@ -83,16 +83,24 @@ export class AuthService {
   }
 
   private toPublicUser(user: any) {
+    const now = new Date();
+
+    const membershipIsActive =
+      user.membershipActive === true &&
+      user.membershipEndsAt &&
+      new Date(user.membershipEndsAt) > now;
+
     return {
       id: user.id,
       email: user.email,
       username: user.username,
       fullName: user.fullName,
       picture: user.picture,
-      subscriptionActive: user.subscriptionActive,
-      subscriptionStatus: user.subscriptionStatus,
-      subscriptionStartedAt: user.subscriptionStartedAt,
-      subscriptionEndsAt: user.subscriptionEndsAt,
+
+      membershipActive: membershipIsActive,
+      membershipStatus: membershipIsActive ? 'active' : user.membershipStatus,
+      membershipStartedAt: user.membershipStartedAt,
+      membershipEndsAt: user.membershipEndsAt,
     };
   }
 }

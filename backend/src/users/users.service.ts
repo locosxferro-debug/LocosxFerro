@@ -18,7 +18,7 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+ async create(createUserDto: CreateUserDto): Promise<User> {
     const existingUser = await this.usersRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -35,12 +35,16 @@ export class UsersService {
       picture: createUserDto.picture ?? null,
       password: createUserDto.password ?? null,
 
-      subscriptionActive: false,
-      mercadoPagoPreapprovalId: null,
-      mercadoPagoPlanId: null,
-      subscriptionStatus: null,
-      subscriptionStartedAt: null,
-      subscriptionEndsAt: null,
+      membershipActive: false,
+      membershipStatus: null,
+      membershipStartedAt: null,
+      membershipEndsAt: null,
+
+      mercadoPagoLastPaymentId: null,
+      mercadoPagoLastPreferenceId: null,
+      mercadoPagoPayerEmail: null,
+      mercadoPagoPaymentStatus: null,
+      mercadoPagoLastPaymentDate: null,
     });
 
     return this.usersRepository.save(user);
@@ -106,12 +110,16 @@ export class UsersService {
       picture: data.picture,
       password: null,
 
-      subscriptionActive: false,
-      mercadoPagoPreapprovalId: null,
-      mercadoPagoPlanId: null,
-      subscriptionStatus: null,
-      subscriptionStartedAt: null,
-      subscriptionEndsAt: null,
+      membershipActive: false,
+      membershipStatus: null,
+      membershipStartedAt: null,
+      membershipEndsAt: null,
+
+      mercadoPagoLastPaymentId: null,
+      mercadoPagoLastPreferenceId: null,
+      mercadoPagoPayerEmail: null,
+      mercadoPagoPaymentStatus: null,
+      mercadoPagoLastPaymentDate: null,
     });
 
     return this.usersRepository.save(newUser);

@@ -29,23 +29,34 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   password!: string | null;
 
+  // Estado de membresía interna de la app
   @Column({ type: 'boolean', default: false })
-  subscriptionActive!: boolean;
+  membershipActive!: boolean;
 
   @Column({ type: 'varchar', nullable: true })
-  mercadoPagoPreapprovalId!: string | null;
-
-  @Column({ type: 'varchar', nullable: true })
-  mercadoPagoPlanId!: string | null;
-
-  @Column({ type: 'varchar', nullable: true })
-  subscriptionStatus!: string | null;
+  membershipStatus!: string | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  subscriptionStartedAt!: Date | null;
+  membershipStartedAt!: Date | null;
 
   @Column({ type: 'timestamp', nullable: true })
-  subscriptionEndsAt!: Date | null;
+  membershipEndsAt!: Date | null;
+
+  // Datos del último pago de Mercado Pago
+  @Column({ type: 'varchar', nullable: true })
+  mercadoPagoLastPaymentId!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  mercadoPagoLastPreferenceId!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  mercadoPagoPayerEmail!: string | null;
+
+  @Column({ type: 'varchar', nullable: true })
+  mercadoPagoPaymentStatus!: string | null;
+
+  @Column({ type: 'timestamp', nullable: true })
+  mercadoPagoLastPaymentDate!: Date | null;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt!: Date;

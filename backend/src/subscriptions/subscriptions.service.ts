@@ -19,31 +19,41 @@ export class SubscriptionsService {
       throw new NotFoundException('Usuario no encontrado');
     }
 
-    if (user.subscriptionActive) {
+    const now = new Date();
+
+    if (
+      user.membershipActive &&
+      user.membershipEndsAt &&
+      user.membershipEndsAt > now
+    ) {
       return {
         alreadyActive: true,
-        message: 'El usuario ya tiene una suscripción activa',
+        message: 'El usuario ya tiene una membresía activa',
       };
     }
 
-    const payerEmail = this.getPayerEmail(user);
-
     const body = {
-      reason: 'Suscripción mensual Locos x Ferro',
+      items: [
+        {
+          title: 'Mensualidad Locos x Ferro',
+          description: 'Acceso mensual a beneficios exclusivos de socios',
+          quantity: 1,
+          currency_id: 'ARS',
+          unit_price: 1000,
+        },
+      ],
+
       external_reference: String(user.id),
 
-      payer_email: payerEmail,
-
-      auto_recurring: {
-        frequency: 1,
-        frequency_type: 'months',
-        transaction_amount: 1000,
-        currency_id: 'ARS',
+      back_urls: {
+        success: `${process.env.FRONTEND_LOCAL_URL}/suscripcion/exito`,
+        failure: `${process.env.FRONTEND_LOCAL_URL}/suscripcion/error`,
+        pending: `${process.env.FRONTEND_LOCAL_URL}/suscripcion/pendiente`,
       },
 
-      back_url: `${process.env.FRONTEND_LOCAL_URL}/suscripcion/exito`,
+      notification_url: `${process.env.BACKEND_PUBLIC_URL}/subscriptions/webhook`,
 
-      status: 'pending',
+      auto_return: 'approved',
     };
 
     console.log('MP_ACCESS_TOKEN existe:', !!process.env.MP_ACCESS_TOKEN);
@@ -52,115 +62,76 @@ export class SubscriptionsService {
       process.env.MP_ACCESS_TOKEN?.slice(0, 12),
     );
 
-    console.log('BODY ENVIADO A MP:', body);
+    console.log('BODY CHECKOUT PRO ENVIADO A MP:', body);
 
-    const response = await fetch('https://api.mercadopago.com/preapproval', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      'https://api.mercadopago.com/checkout/preferences',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
       },
-      body: JSON.stringify(body),
-    });
+    );
 
     const data = await response.json();
 
-    console.log('RESPUESTA MP CREATE PREAPPROVAL:', data);
+    console.log('RESPUESTA CHECKOUT PRO:', data);
 
     if (!response.ok) {
-      console.error('ERROR CREANDO SUSCRIPCIÓN EN MP:', data);
-      throw new Error('Error creando suscripción en Mercado Pago');
+      console.error('ERROR CREANDO PREFERENCE:', data);
+      throw new Error('Error creando pago en Mercado Pago');
     }
 
     await this.usersRepository.update(user.id, {
-      mercadoPagoPreapprovalId: data.id,
-      subscriptionStatus: data.status,
-      subscriptionActive: data.status === 'authorized',
+      membershipStatus: 'pending',
+      mercadoPagoLastPreferenceId: data.id,
+      mercadoPagoPaymentStatus: 'pending',
     });
 
     return {
       initPoint: data.init_point,
-      preapprovalId: data.id,
-      status: data.status,
+      preferenceId: data.id,
+      status: 'pending',
     };
   }
 
     async handleWebhook(query: any, body: any) {
-    const type = body?.type || query?.type || query?.topic;
-    const action = body?.action;
-    const resourceId =
-      body?.data?.id ||
-      query?.id ||
-      query?.['data.id'] ||
-      body?.id;
+      const type = body?.type || query?.type || query?.topic;
+      const action = body?.action;
+      const resourceId =
+        body?.data?.id ||
+        query?.id ||
+        query?.['data.id'] ||
+        body?.id;
 
-    console.log('WEBHOOK MP:', {
-      type,
-      action,
-      resourceId,
-      query,
-      body,
-    });
+      console.log('WEBHOOK MP:', {
+        type,
+        action,
+        resourceId,
+        query,
+        body,
+      });
 
-    if (!resourceId) {
+      if (!resourceId) {
+        return { received: true };
+      }
+
+      if (type === 'payment') {
+        await this.handlePaymentWebhook(String(resourceId));
+        return { received: true };
+      }
+
+      console.log('Evento ignorado:', type);
+
       return { received: true };
     }
 
-    if (type === 'payment') {
-      await this.handlePaymentWebhook(String(resourceId));
-      return { received: true };
-    }
-
-    if (
-      type === 'subscription_preapproval' ||
-      type === 'preapproval'
-    ) {
-      await this.handlePreapprovalWebhook(String(resourceId));
-      return { received: true };
-    }
-
-    console.log('Evento ignorado:', type);
-
-    return { received: true };
-  }
 
 
-
-  private async handlePreapprovalWebhook(preapprovalId: string) {
-    const response = await fetch(
-      `https://api.mercadopago.com/preapproval/${preapprovalId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.MP_ACCESS_TOKEN}`,
-        },
-      },
-    );
-
-    const subscription = await response.json();
-
-    if (!response.ok) {
-      console.error('Error consultando preapproval:', subscription);
-      return;
-    }
-
-    console.log('PREAPPROVAL MP:', subscription);
-
-    const userId = Number(subscription.external_reference);
-
-    if (!userId) {
-      console.log('Preapproval sin external_reference');
-      return;
-    }
-
-    const isActive = subscription.status === 'authorized';
-
-    await this.usersRepository.update(userId, {
-      mercadoPagoPreapprovalId: subscription.id,
-      subscriptionStatus: subscription.status,
-      subscriptionActive: isActive,
-      subscriptionStartedAt: isActive ? new Date() : null,
-    });
-  }
+  
 
 
 
@@ -186,7 +157,8 @@ export class SubscriptionsService {
       status: payment.status,
       external_reference: payment.external_reference,
       payer_email: payment.payer?.email,
-      preapproval_id: payment.metadata?.preapproval_id,
+      preference_id: payment.preference_id,
+      date_approved: payment.date_approved,
     });
 
     const userId = Number(payment.external_reference);
@@ -200,17 +172,37 @@ export class SubscriptionsService {
 
     if (!isApproved) {
       await this.usersRepository.update(userId, {
-        subscriptionStatus: payment.status,
-        subscriptionActive: false,
+        membershipStatus: payment.status,
+        membershipActive: false,
+        mercadoPagoLastPaymentId: String(payment.id),
+        mercadoPagoPayerEmail: payment.payer?.email ?? null,
+        mercadoPagoPaymentStatus: payment.status,
+        mercadoPagoLastPaymentDate: payment.date_created
+          ? new Date(payment.date_created)
+          : new Date(),
       });
 
       return;
     }
 
+    const startedAt = payment.date_approved
+      ? new Date(payment.date_approved)
+      : new Date();
+
+    const endsAt = new Date(startedAt);
+    endsAt.setDate(endsAt.getDate() + 30);
+
     await this.usersRepository.update(userId, {
-      subscriptionStatus: 'authorized',
-      subscriptionActive: true,
-      subscriptionStartedAt: new Date(),
+      membershipActive: true,
+      membershipStatus: 'active',
+      membershipStartedAt: startedAt,
+      membershipEndsAt: endsAt,
+
+      mercadoPagoLastPaymentId: String(payment.id),
+      mercadoPagoLastPreferenceId: payment.preference_id ?? null,
+      mercadoPagoPayerEmail: payment.payer?.email ?? null,
+      mercadoPagoPaymentStatus: payment.status,
+      mercadoPagoLastPaymentDate: startedAt,
     });
   }
 
