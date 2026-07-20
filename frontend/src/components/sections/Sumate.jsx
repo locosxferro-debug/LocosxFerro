@@ -3,7 +3,7 @@ import LoginGoogleButton from '../auth/LoginGoogleButton.jsx';
 import { redirectToSubscriptionCheckout } from '../../services/subscriptionService';
 
 export default function Sumate({ user, onLogin }) {
-  const estaSuscripto = user?.subscriptionActive === true;
+  const estaSuscripto = user?.membershipActive === true;
 
   const handleSubscribe = async () => {
     if (!user || estaSuscripto) return;

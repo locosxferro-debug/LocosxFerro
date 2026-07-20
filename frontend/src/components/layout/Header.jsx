@@ -28,8 +28,11 @@ export default function Header({ user, onLogin }) {
   const inicialUsuario = nombreUsuario.charAt(0).toUpperCase();
 
   const linksVisibles = links.filter(
-    (link) => !link.private || user?.subscriptionActive
+    (link) => !link.private || user?.membershipActive
   );
+
+  console.log('HEADER USER:', user);
+  console.log('HEADER membershipActive:', user?.membershipActive);
 
   return (
     <header className="header">
@@ -75,7 +78,7 @@ export default function Header({ user, onLogin }) {
                 <div className="user-info">
                   <span className="user-name">{nombreUsuario}</span>
 
-                  {user.subscriptionActive ? (
+                  {user.membershipActive ? (
                     <span className="user-status socio">Socio activo</span>
                   ) : (
                     <span className="user-status no-socio">No socio</span>
