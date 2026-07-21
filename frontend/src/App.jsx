@@ -14,6 +14,22 @@ export default function App() {
   const [user, setUser] = useState(getCurrentUser());
 
   useEffect(() => {
+    const despertarBackend = async () => {
+      const apiUrl = import.meta.env.VITE_API_URL;
+
+      if (!apiUrl) {
+        console.warn('Falta configurar VITE_API_URL');
+        return;
+      }
+
+      try {
+        await fetch(`${apiUrl}/health`);
+        console.log('Backend despierto');
+      } catch (error) {
+        console.log('Backend todavía levantando...');
+      }
+    };
+
     const actualizarUsuario = async () => {
       const userActualizado = await getMe();
 
@@ -25,7 +41,10 @@ export default function App() {
       }
     };
 
-    actualizarUsuario();
+    Promise.allSettled([
+      despertarBackend(),
+      actualizarUsuario(),
+    ]);
   }, []);
 
   return (
@@ -45,7 +64,11 @@ export default function App() {
         <Route
           path="/socios"
           element={
-            <Socios user={user} onLogin={setUser} />
+            <>
+              <Header user={user} onLogin={setUser} />
+              <Socios user={user} onLogin={setUser} />
+              <Footer />
+            </>
           }
         />
 

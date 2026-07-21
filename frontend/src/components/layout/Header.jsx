@@ -31,8 +31,7 @@ export default function Header({ user, onLogin }) {
     (link) => !link.private || user?.membershipActive
   );
 
-  console.log('HEADER USER:', user);
-  console.log('HEADER membershipActive:', user?.membershipActive);
+
 
   return (
     <header className="header">

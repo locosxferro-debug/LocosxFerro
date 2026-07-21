@@ -44,7 +44,7 @@ export default function Socios({ user, onLogin }) {
     );
   }
 
-  if (!user.membershipActive) {
+  if (user.membershipActive !== true) {
     return (
       <>
         <Header user={user} onLogin={onLogin} />
